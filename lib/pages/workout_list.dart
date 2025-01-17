@@ -11,15 +11,16 @@ class WorkoutList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: sampleData.exerciseResults.length,
-      itemBuilder: (context, index) => _WorkoutListItem(sampleData.exerciseResults[index]),
+      itemBuilder: (context, index) => _WorkoutListItem(sampleData.exerciseResults[index], sampleData.dateTimeWhenWasDone[index]),
     );
   }
 }
 
 class _WorkoutListItem extends StatelessWidget {
   final ExerciseResult exerciseResult;
+  final DateTime dateTime;
 
-  const _WorkoutListItem(this.exerciseResult);
+  const _WorkoutListItem(this.exerciseResult, this.dateTime);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _WorkoutListItem extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => WorkoutHistoryPage(exerciseResult: exerciseResult)
+              builder: (context) => WorkoutHistoryPage(exerciseResult: exerciseResult, dateTime: dateTime,)
           ),
         );
       },
