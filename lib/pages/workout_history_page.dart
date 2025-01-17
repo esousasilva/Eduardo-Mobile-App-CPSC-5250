@@ -16,11 +16,16 @@ class WorkoutHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: WorkoutDetails(exerciseResult: exerciseResult, dateTime: dateTime),
-        ),
-      ),
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              child: WorkoutDetails(exerciseResult: exerciseResult, dateTime: dateTime),
+            ),
+          ),
+        ],
+      )
     );
   }
 }
