@@ -4,10 +4,10 @@ import 'exercise.dart';
 
 final sampleData = Workout([
   ExerciseResult(Exercise('PushUps', 15, 'Repetitions'), 13),
-  ExerciseResult(Exercise('Squats', 30, 'Repetitions'), 35),
+  ExerciseResult(Exercise('Squats', 30, 'Repetitions'), 30),
   ExerciseResult(Exercise('Jogging', 20, 'Miles'), 10),
-  ExerciseResult(Exercise('Plank', 30, 'Seconds (Held)'), 60),
-  ExerciseResult(Exercise('Bench press', 20, 'Repetitions (40lb per rep)'), 15),
+  ExerciseResult(Exercise('Plank', 30, 'Seconds (Held)'), 8),
+  ExerciseResult(Exercise('Bench press', 20, 'Repetitions (40lb per rep)'), 17),
 ],[
   DateTime.utc(2024, 5, 2),
   DateTime.utc(2024, 4, 9),
