@@ -9,15 +9,16 @@ import '../model/exercise_result.dart';
 
 class WorkoutHistoryPage extends StatelessWidget {
   final ExerciseResult exerciseResult;
+  final DateTime dateTime;
 
-  const WorkoutHistoryPage({super.key, required this.exerciseResult});
+  const WorkoutHistoryPage({super.key, required this.exerciseResult, required this.dateTime});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: WorkoutDetails(exerciseResult: exerciseResult, dateTime: DateTime.now(),),
+          child: WorkoutDetails(exerciseResult: exerciseResult, dateTime: dateTime),
         ),
       ),
     );
