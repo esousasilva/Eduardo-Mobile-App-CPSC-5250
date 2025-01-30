@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../model/exercise_result.dart';
 
-class WorkoutHistoryPage extends StatelessWidget {
+class WorkoutDetails extends StatelessWidget {
   final List<ExerciseResult> exerciseResult;
 
-  const WorkoutHistoryPage({super.key, required this.exerciseResult});
+  const WorkoutDetails({super.key, required this.exerciseResult});
 
   @override
   Widget build(BuildContext context) {

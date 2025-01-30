@@ -1,12 +1,12 @@
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 import 'package:eduardo_personal_app/model/workout.dart';
-import 'package:eduardo_personal_app/pages/workout_history_page.dart';
+import 'package:eduardo_personal_app/pages/workout_details.dart';
 import 'package:eduardo_personal_app/model/sample_data.dart';
 import 'package:flutter/material.dart';
 
 
-class WorkoutList extends StatelessWidget {
-  const WorkoutList({super.key});
+class WorkoutHistoryPage extends StatelessWidget {
+  const WorkoutHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _WorkoutListItem extends StatelessWidget {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => WorkoutHistoryPage(
+                builder: (context) => WorkoutDetails(
                     exerciseResult: workout.exerciseResults)),
           );
         }

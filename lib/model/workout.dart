@@ -2,9 +2,11 @@ import 'package:eduardo_personal_app/model/exercise.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 
 class Workout {
+  final String name;
+
   final List<ExerciseResult> exerciseResults;
 
-  final List<DateTime> dateTimeWhenWasDone;
+  final DateTime dateTimeWhenWasDone;
 
-  Workout(this.exerciseResults, this.dateTimeWhenWasDone);
+  Workout(this.name, this.exerciseResults, this.dateTimeWhenWasDone);
 }
