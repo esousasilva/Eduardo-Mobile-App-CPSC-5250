@@ -16,6 +16,22 @@ class WorkoutHistoryPage extends StatelessWidget {
         itemCount: sampleData.length,
         itemBuilder: (context, index) => _WorkoutListItem(sampleData[index], sampleData[index].dateTimeWhenWasDone),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fitness_center),
+            label: 'My Workout',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'User',
+          ),
+        ],
+      ),
     );
   }
 }
