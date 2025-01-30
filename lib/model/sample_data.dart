@@ -23,5 +23,13 @@ final sampleData = [Workout('Workout 1', [
     ExerciseResult(Exercise('Plank', 30, 'Seconds (Held)'), 8),
   ],
       DateTime.utc(2024, 20, 2)
+  ),
+  Workout('Workout 4', [
+    ExerciseResult(Exercise('PushUps', 15, 'Repetitions'), 13),
+    ExerciseResult(Exercise('Squats', 30, 'Repetitions'), 30),
+    ExerciseResult(Exercise('Jogging', 20, 'Miles'), 10),
+    ExerciseResult(Exercise('Plank', 30, 'Seconds (Held)'), 8),
+  ],
+      DateTime.utc(2024, 20, 2)
   )
 ];
