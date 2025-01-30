@@ -1,9 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 import 'package:eduardo_personal_app/model/workout.dart';
 import 'package:eduardo_personal_app/pages/workout_details.dart';
 import 'package:eduardo_personal_app/model/sample_data.dart';
-import 'package:flutter/material.dart';
-
 
 class WorkoutHistoryPage extends StatelessWidget {
   const WorkoutHistoryPage({super.key});
@@ -12,9 +11,29 @@ class WorkoutHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Workout List')),
-      body: ListView.builder(
-        itemCount: sampleData.length,
-        itemBuilder: (context, index) => _WorkoutListItem(sampleData[index], sampleData[index].dateTimeWhenWasDone),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: sampleData.length,
+              itemBuilder: (context, index) => _WorkoutListItem(sampleData[index], sampleData[index].dateTimeWhenWasDone),
+            ),
+            SizedBox(height: 8),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  textStyle: TextStyle(fontSize: 15),
+                ),
+                child: Text('Start New Workout'),
+              ),
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -35,6 +54,7 @@ class WorkoutHistoryPage extends StatelessWidget {
     );
   }
 }
+
 
 class _WorkoutListItem extends StatelessWidget {
   final Workout workout;
