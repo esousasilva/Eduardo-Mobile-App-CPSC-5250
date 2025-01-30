@@ -1,5 +1,5 @@
+import 'package:eduardo_personal_app/pages/workout_details.dart';
 import 'package:eduardo_personal_app/pages/workout_history_page.dart';
-import 'package:eduardo_personal_app/pages/workout_list.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const WorkoutList(),
+      home: const WorkoutHistoryPage(),
     );
   }
 }
