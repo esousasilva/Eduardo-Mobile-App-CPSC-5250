@@ -1,4 +1,4 @@
-import 'package:eduardo_personal_app/pages/workout_creation_page.dart';
+import 'package:eduardo_personal_app/pages/workout_recording_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 import 'package:eduardo_personal_app/model/workout.dart';
@@ -28,7 +28,7 @@ class WorkoutHistoryPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => const WorkoutCreationPage())
+                        builder: (context) => const WorkoutRecordingPage())
                   );
                 },
                 style: ElevatedButton.styleFrom(
