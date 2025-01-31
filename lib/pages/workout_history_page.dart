@@ -1,3 +1,4 @@
+import 'package:eduardo_personal_app/pages/workout_creation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 import 'package:eduardo_personal_app/model/workout.dart';
@@ -24,7 +25,12 @@ class WorkoutHistoryPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const WorkoutCreationPage())
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   textStyle: TextStyle(fontSize: 15),
