@@ -1,13 +1,14 @@
+import 'dart:math';
+
 import 'package:eduardo_personal_app/model/exercise.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
-import 'package:eduardo_personal_app/model/sample_data.dart';
 import 'package:eduardo_personal_app/pages/laps_record_widget.dart';
 import 'package:eduardo_personal_app/pages/miles_record_widget.dart';
 import 'package:eduardo_personal_app/pages/repetitions_record_widget.dart';
 import 'package:eduardo_personal_app/pages/seconds_record_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/workout_plan.dart';
+import 'package:provider/provider.dart';
 import '../model/workout.dart';
 
 enum RepetitionUnitValues {
@@ -36,7 +37,17 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final workoutExercises = WorkoutPlan('Workout1Default');
+    final workoutExercises = context.watch<WorkoutPlan>();
+    final recentWorkouts = workoutExercises.getWorkouts.where((w) =>
+        w.dateTimeWhenWasDone.isAfter(DateTime.now().
+        subtract(Duration(days: 7)))).toList();
+    int num;
+    if(workoutExercises.getWorkouts.isNotEmpty){
+      num = context.watch<WorkoutPlan>().getWorkouts.first.dateTimeWhenWasDone.month;
+    } else {
+      num = 1;
+    }
+    double performance = (recentWorkouts.length * num * pi) as double;
 
     return Scaffold(
       appBar: AppBar(
@@ -48,11 +59,13 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 15),
-            Text('Exercises', style: TextStyle(fontSize: 21)),
+            Text('Exercises List', style: TextStyle(fontSize: 21)),
             SizedBox(height: 15),
+            Text('User Performance: ${performance.truncate()}'),
+            Text('Note: The user performance is based on the workouts performed in the last 7 days.',
+              style: TextStyle(fontSize: 12),),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
               itemCount: workoutExercises.exercises.length,
               itemBuilder: (context, index) {
                 final item = WorkoutRecordingItem(
@@ -65,6 +78,7 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
+                workoutExercises.getNum();
                 // Collect final values from each WorkoutRecordingItem state
                 List<ExerciseResult> exerciseResults = workoutItemStates
                     .map((state) => state.getExerciseResult())
@@ -77,7 +91,7 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
                   DateTime.now(),
                 );
 
-                sampleData.add(newWorkout);
+                workoutExercises.addOutput(newWorkout);
                 Navigator.of(context).pop();
               },
               child: Text(

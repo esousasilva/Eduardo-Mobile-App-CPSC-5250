@@ -1,6 +1,9 @@
+import 'package:eduardo_personal_app/model/workout.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'exercise.dart';
 
-class WorkoutPlan{
+class WorkoutPlan with ChangeNotifier{
   final String workoutName;
   final List<Exercise> exercises = [
     Exercise('Squats', 0, ExerciseType.repetitions),
@@ -8,12 +11,20 @@ class WorkoutPlan{
     Exercise('Bench Press', 0, ExerciseType.seconds),
     Exercise('Swimming', 0, ExerciseType.laps),
   ];
+  final List<Workout> _sampleData = [];
+  int get num => _sampleData.length;
 
   WorkoutPlan(this.workoutName);
 
-  addOutput(Exercise exercise){
-    exercises.add(exercise);
+  addOutput(Workout workout){
+    _sampleData.add(workout);
+    notifyListeners();
+  }
+
+  getNum() {
+    return num;
   }
 
   List<Exercise> get getExercises => [...exercises];
+  List<Workout> get getWorkouts => [..._sampleData];
 }

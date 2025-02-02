@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 import 'package:eduardo_personal_app/model/workout.dart';
 import 'package:eduardo_personal_app/pages/workout_details.dart';
-import 'package:eduardo_personal_app/model/sample_data.dart';
+import 'package:eduardo_personal_app/model/workout_plan.dart';
+import 'package:provider/provider.dart';
 
 class WorkoutHistoryPage extends StatefulWidget {
   const WorkoutHistoryPage({super.key});
@@ -17,16 +18,17 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final workoutExercises = context.watch<WorkoutPlan>();
     return Scaffold(
-      appBar: AppBar(title: Text('Workout List')),
+      appBar: AppBar(title: Text('Workout List (${workoutExercises.getWorkouts.length})')),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ListView.builder(
               shrinkWrap: true,
-              itemCount: sampleData.length,
-              itemBuilder: (context, index) => _WorkoutListItem(sampleData[index], sampleData[index].dateTimeWhenWasDone),
+              itemCount: workoutExercises.getWorkouts.length,
+              itemBuilder: (context, index) => _WorkoutListItem(workoutExercises.getWorkouts[index], workoutExercises.getWorkouts[index].dateTimeWhenWasDone),
             ),
             SizedBox(height: 8),
             Padding(

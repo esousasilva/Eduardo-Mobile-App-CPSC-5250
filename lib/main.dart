@@ -1,4 +1,5 @@
-import 'package:eduardo_personal_app/pages/workout_details.dart';
+import 'package:eduardo_personal_app/model/workout_plan.dart';
+import 'package:provider/provider.dart';
 import 'package:eduardo_personal_app/pages/workout_history_page.dart';
 import 'package:flutter/material.dart';
 
@@ -12,14 +13,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Workout History',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => WorkoutPlan('workoutName'),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Workout History',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          useMaterial3: true,
+        ),
+        home: const WorkoutHistoryPage(),
       ),
-      home: const WorkoutHistoryPage(),
     );
   }
 }
