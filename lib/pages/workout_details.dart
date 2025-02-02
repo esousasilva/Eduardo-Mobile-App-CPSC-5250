@@ -23,21 +23,11 @@ class WorkoutDetails extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                      'Target: ${result.exercise.target_output} ${result.exercise
-                          .unit} \n'
-                          'Actual output: ${result.actuallyAchievedOutput} ${result
-                          .exercise.unit}'
+                      'Target: ${result.exercise.target_output} ${result.exercise.unit.label} \n'
+                          'Actual output: ${result.actuallyAchievedOutput} ${result.exercise.unit.label}'
+
                   ),
                   SizedBox(height: 5),
-                  SizedBox(
-                    width: 250, // Set the desired width
-                    height: 10, // Set the desired height
-                    child: LinearProgressIndicator(
-                      value: _valueAchieved, // Normalized progress
-                      backgroundColor: Colors.grey[300],
-                      color: Colors.blue,
-                    )
-                  )
                 ]
               )
             );

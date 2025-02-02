@@ -5,8 +5,15 @@ import 'package:eduardo_personal_app/model/workout.dart';
 import 'package:eduardo_personal_app/pages/workout_details.dart';
 import 'package:eduardo_personal_app/model/sample_data.dart';
 
-class WorkoutHistoryPage extends StatelessWidget {
+class WorkoutHistoryPage extends StatefulWidget {
   const WorkoutHistoryPage({super.key});
+
+  @override
+  State<WorkoutHistoryPage> createState() => _WorkoutHistoryPageState();
+}
+
+
+class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +32,11 @@ class WorkoutHistoryPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const WorkoutRecordingPage())
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const WorkoutRecordingPage()),
                   );
+                  setState(() {}); // Refresh the list after returning
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 15),
@@ -61,7 +68,6 @@ class WorkoutHistoryPage extends StatelessWidget {
   }
 }
 
-
 class _WorkoutListItem extends StatelessWidget {
   final Workout workout;
   final DateTime dateTime;
@@ -71,22 +77,21 @@ class _WorkoutListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: ListTile(
-        title: Text(workout.name),
-        subtitle: Text('Date Completed: ${workout.dateTimeWhenWasDone.month}-'
-            '${workout.dateTimeWhenWasDone.day}-'
-            '${workout.dateTimeWhenWasDone.year}'),
-        trailing: Icon(Icons.arrow_forward),
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => WorkoutDetails(
-                    exerciseResult: workout.exerciseResults)),
-          );
-        }
-      )
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: ListTile(
+            title: Text(workout.name),
+            subtitle: Text('Date Completed: ${workout.dateTimeWhenWasDone.month}-'
+                '${workout.dateTimeWhenWasDone.day}-'
+                '${workout.dateTimeWhenWasDone.year}'),
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => WorkoutDetails(
+                        exerciseResult: workout.exerciseResults)),
+              );
+            }
+        )
     );
   }
 }
-
