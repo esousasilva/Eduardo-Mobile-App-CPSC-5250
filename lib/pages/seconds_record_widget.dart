@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SecondsRecordWidget extends StatefulWidget {
-  const SecondsRecordWidget({super.key});
+  final Function(Duration) onValueChanged;
+  const SecondsRecordWidget({super.key, required this.onValueChanged});
 
   @override
   State<SecondsRecordWidget> createState() => _SecondsRecordWidgetState();
@@ -48,6 +49,7 @@ class _SecondsRecordWidgetState extends State<SecondsRecordWidget> {
       chronometer.stop();
       elapsed = chronometer.elapsed;
     });
+    widget.onValueChanged(elapsed);
   }
 
   void _resetTimer() {
@@ -57,6 +59,7 @@ class _SecondsRecordWidgetState extends State<SecondsRecordWidget> {
         elapsed = Duration.zero;
       }
     });
+    widget.onValueChanged(elapsed);
   }
 
 

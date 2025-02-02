@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LapsRecordWidget extends StatefulWidget {
-  const LapsRecordWidget({super.key});
+  final Function(int) onValueChanged;
+  const LapsRecordWidget({super.key, required this.onValueChanged});
 
   @override
   State<LapsRecordWidget> createState() => _LapsRecordWidgetState();
@@ -15,6 +16,7 @@ class _LapsRecordWidgetState extends State<LapsRecordWidget> {
     setState(() {
       _laps++;
     });
+    widget.onValueChanged(_laps);
   }
 
   void _decrementLaps() {
@@ -23,6 +25,7 @@ class _LapsRecordWidgetState extends State<LapsRecordWidget> {
         _laps--;
       }
     });
+    widget.onValueChanged(_laps);
   }
 
   @override

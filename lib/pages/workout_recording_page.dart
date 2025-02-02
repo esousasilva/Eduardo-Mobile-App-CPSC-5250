@@ -131,17 +131,17 @@ class _WorkoutRecordingItemState extends State<WorkoutRecordingItem> {
     switch (widget.exercise.unit.label) {
       case 'Seconds':
         selectedWidget = SecondsRecordWidget(
-          //onValueChanged: (value) => updateValue(value.toInt()),
+          onValueChanged: (value) => updateValue(value.inSeconds),
         );
         break;
       case 'Repetitions':
         selectedWidget = RepetitionsRecordWidget(
-          //onValueChanged: (value) => updateValue(value.toInt()),
+          onValueChanged: (value) => updateValue(value.toInt()),
         );
         break;
       case 'Laps':
         selectedWidget = LapsRecordWidget(
-          //onValueChanged: (value) => updateValue(value.toInt()),
+          onValueChanged: (value) => updateValue(value.toInt()),
         );
         break;
       case 'Miles':
@@ -150,7 +150,9 @@ class _WorkoutRecordingItemState extends State<WorkoutRecordingItem> {
         );
         break;
       default:
-        selectedWidget = SecondsRecordWidget();
+        selectedWidget = selectedWidget = MilesRecordWidget(
+          onValueChanged: (value) => updateValue(value.toInt()),
+        );
     }
 
     return Padding(
