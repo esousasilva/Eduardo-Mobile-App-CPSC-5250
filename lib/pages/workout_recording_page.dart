@@ -6,6 +6,7 @@ import 'package:eduardo_personal_app/pages/laps_record_widget.dart';
 import 'package:eduardo_personal_app/pages/miles_record_widget.dart';
 import 'package:eduardo_personal_app/pages/repetitions_record_widget.dart';
 import 'package:eduardo_personal_app/pages/seconds_record_widget.dart';
+import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/workout_plan.dart';
 import 'package:provider/provider.dart';
@@ -38,16 +39,6 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
   @override
   Widget build(BuildContext context) {
     final workoutExercises = context.watch<WorkoutPlan>();
-    final recentWorkouts = workoutExercises.getWorkouts.where((w) =>
-        w.dateTimeWhenWasDone.isAfter(DateTime.now().
-        subtract(Duration(days: 7)))).toList();
-    int num;
-    if(workoutExercises.getWorkouts.isNotEmpty){
-      num = context.watch<WorkoutPlan>().getWorkouts.first.dateTimeWhenWasDone.month;
-    } else {
-      num = 1;
-    }
-    double performance = (recentWorkouts.length * num * pi) as double;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,9 +52,7 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
             SizedBox(height: 15),
             Text('Exercises List', style: TextStyle(fontSize: 21)),
             SizedBox(height: 15),
-            Text('User Performance: ${performance.truncate()}'),
-            Text('Note: The user performance is based on the workouts performed in the last 7 days.',
-              style: TextStyle(fontSize: 12),),
+            UserPerformanceWidget(),
             ListView.builder(
               shrinkWrap: true,
               itemCount: workoutExercises.exercises.length,

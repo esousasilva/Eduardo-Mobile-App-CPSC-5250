@@ -1,3 +1,4 @@
+import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
 import 'package:eduardo_personal_app/pages/workout_recording_page.dart';
 import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
@@ -25,6 +26,8 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            UserPerformanceWidget(),
+            SizedBox(height: 10,),
             ListView.builder(
               shrinkWrap: true,
               itemCount: workoutExercises.getWorkouts.length,
