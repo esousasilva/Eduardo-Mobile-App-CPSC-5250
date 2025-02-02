@@ -21,11 +21,17 @@ class UserPerformanceWidget extends StatelessWidget {
         }
 
         double performance = (recentWorkouts.length * num * pi);
+        String userPerformanceMessage;
+        if(performance.truncate() == 0){
+          userPerformanceMessage = 'No Data Available';
+        }else {
+          userPerformanceMessage = performance.truncate().toString();
+        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('User Performance: ${performance.truncate()}'),
+            Text('User Performance: ${userPerformanceMessage}'),
             Text(
               'Note: The user performance is based on the workouts performed in the last 7 days.',
               style: TextStyle(fontSize: 12),
