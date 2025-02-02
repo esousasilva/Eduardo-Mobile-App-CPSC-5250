@@ -3,63 +3,64 @@ import 'package:eduardo_personal_app/pages/laps_record_widget.dart';
 import 'package:eduardo_personal_app/pages/miles_record_widget.dart';
 import 'package:eduardo_personal_app/pages/repetitions_record_widget.dart';
 import 'package:eduardo_personal_app/pages/seconds_record_widget.dart';
-import 'package:eduardo_personal_app/pages/workout_history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:eduardo_personal_app/pages/workout_recording_page.dart';
 import 'package:eduardo_personal_app/model/workout_plan.dart';
-import 'package:eduardo_personal_app/model/exercise.dart';
-import 'package:eduardo_personal_app/model/workout.dart';
-import 'package:integration_test/integration_test.dart';
 
 void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  testWidgets(
-    'Testing if have different input forms for different units',
-        (tester) async {
-      // Create workout plan instance
-      final workoutPlan = WorkoutPlan('Test Plan');
+  group('WorkoutRecordingPage Tests', () {
+    testWidgets(
+      'Testing if have different input forms for different units in the workout record page',
+          (tester) async {
+        // Create workout plan instance
+        final workoutPlan = WorkoutPlan('Test Plan');
 
-      await tester.pumpWidget(
-        ChangeNotifierProvider<WorkoutPlan>.value(
-          value: workoutPlan,
-          child: MaterialApp(home: WorkoutRecordingPage()),
-        ),
-      );
-      expect(find.byType(SecondsRecordWidget), findsOneWidget);
-      expect(find.byType(MilesRecordWidget), findsOneWidget);
-      expect(find.byType(RepetitionsRecordWidget), findsOneWidget);
-      expect(find.byType(LapsRecordWidget), findsOneWidget);
-    },
-  );
+        await tester.pumpWidget(
+          ChangeNotifierProvider<WorkoutPlan>.value(
+            value: workoutPlan,
+            child: MaterialApp(home: WorkoutRecordingPage()),
+          ),
+        );
+        expect(find.byType(SecondsRecordWidget), findsOneWidget);
+        expect(find.byType(MilesRecordWidget), findsOneWidget);
+        expect(find.byType(RepetitionsRecordWidget), findsOneWidget);
+        expect(find.byType(LapsRecordWidget), findsOneWidget);
+      },
+    );
 
-  testWidgets(
-    'Testing adding the Workout to the shared state',
-        (WidgetTester tester) async {
-      // Create workout plan instance
-      final workoutPlan = WorkoutPlan('Test Plan');
+    testWidgets(
+      'Testing adding the Workout to the shared state data',
+          (WidgetTester tester) async {
+        // Create workout plan instance
+        final workoutPlan = WorkoutPlan('Test Plan');
 
-      await tester.pumpWidget(
-        ChangeNotifierProvider<WorkoutPlan>.value(
-          value: workoutPlan,
-          child: MaterialApp(home: MyApp()),
-        ),
-      );
+        await tester.pumpWidget(
+          ChangeNotifierProvider<WorkoutPlan>.value(
+            value: workoutPlan,
+            child: MaterialApp(
+              home: WorkoutRecordingPage(),
+            ),
+          ),
+        );
 
-      // Tap on Save Workout button
-      await tester.tap(find.widgetWithText(ElevatedButton, 'Start New Workout'));
-      await tester.pumpAndSettle();
+        // Ensure the "Save Workout" button is visible by scrolling to it
+        final buttonFinder = find.widgetWithText(ElevatedButton, 'Save Workout');
+        await tester.ensureVisible(buttonFinder);
 
-      expect(find.widgetWithText(ElevatedButton, 'Start New Workout'), findsOneWidget);
+        // Ensure the button is enabled
+        expect(buttonFinder, findsOneWidget);
+        expect(tester.widget<ElevatedButton>(buttonFinder).enabled, isTrue);
 
-      // await tester.tap(find.widgetWithText(ElevatedButton, 'Save Workout'));
-      // await tester.pumpAndSettle();
-      //
-      // // Verify that a workout was added to the state
-      expect(workoutPlan.getWorkouts.length, 1);
-    },
-  );
+        // Tap on Save Workout button
+        await tester.tap(buttonFinder);
+        await tester.pumpAndSettle();
 
-
+        // Verify that a workout was added to the state
+        int num = workoutPlan.getNum();
+        expect(num, equals(1));
+      },
+    );
+  });
 }
