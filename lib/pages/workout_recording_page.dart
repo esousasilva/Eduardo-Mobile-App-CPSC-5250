@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:eduardo_personal_app/model/exercise.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
+import 'package:eduardo_personal_app/pages/exercise_target_input_widget.dart';
 import 'package:eduardo_personal_app/pages/laps_record_widget.dart';
 import 'package:eduardo_personal_app/pages/miles_record_widget.dart';
 import 'package:eduardo_personal_app/pages/repetitions_record_widget.dart';
@@ -10,7 +12,7 @@ import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:eduardo_personal_app/model/workout_plan.dart';
 import 'package:provider/provider.dart';
-import '../model/workout.dart';
+import '../model/workout_viewmodel.dart';
 
 enum RepetitionUnitValues {
   five('5', 5),
@@ -33,67 +35,62 @@ class WorkoutRecordingPage extends StatefulWidget {
 }
 
 class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
-  final TextEditingController repetitionUnitController = TextEditingController();
   List<_WorkoutRecordingItemState> workoutItemStates = [];
 
   @override
   Widget build(BuildContext context) {
-    final workoutExercises = context.watch<WorkoutPlan>();
+    final workoutViewModel = context.watch<WorkoutViewModel>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Workout Recording'),
-      ),
+      appBar: AppBar(title: Text('Workout Recording')),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          shrinkWrap: true,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 15),
-            Text('Exercises List', style: TextStyle(fontSize: 21)),
+            Center(
+              child: Text('Exercise List', style: TextStyle(fontSize: 21)),
+            ),
             SizedBox(height: 15),
-            UserPerformanceWidget(),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: workoutExercises.exercises.length,
-              itemBuilder: (context, index) {
-                final item = WorkoutRecordingItem(
-                  exercise: workoutExercises.exercises[index],
-                  onStateCreated: (state) => workoutItemStates.add(state),
-                );
-                return item;
-              },
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7, // Adjust height dynamically
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemCount: workoutViewModel.exercises.length,
+                itemBuilder: (context, index) {
+                  return WorkoutRecordingItem(
+                    exercise: workoutViewModel.exercises[index],
+                    onStateCreated: (state) => workoutItemStates.add(state),
+                  );
+                },
+              ),
             ),
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                workoutExercises.getNum();
-                // Collect final values from each WorkoutRecordingItem state
                 List<ExerciseResult> exerciseResults = workoutItemStates
                     .map((state) => state.getExerciseResult())
                     .toList();
 
-                // Save the collected exercise results
-                final newWorkout = Workout(
-                  'Custom Workout',
-                  exerciseResults,
-                  DateTime.now(),
-                );
-
-                workoutExercises.addOutput(newWorkout);
+                workoutViewModel.addWorkout('Custom Workout', exerciseResults);
                 Navigator.of(context).pop();
               },
               child: Text(
                 'Save Workout',
                 style: TextStyle(fontSize: 19, color: Colors.green),
               ),
-            )
+            ),
+            SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 }
+
 
 class WorkoutRecordingItem extends StatefulWidget {
   final Exercise exercise;
@@ -107,6 +104,7 @@ class WorkoutRecordingItem extends StatefulWidget {
 
   @override
   State<WorkoutRecordingItem> createState() {
+    exercise.target_output = 0;
     final state = _WorkoutRecordingItemState();
     onStateCreated(state);
     return state;
@@ -115,12 +113,20 @@ class WorkoutRecordingItem extends StatefulWidget {
 
 class _WorkoutRecordingItemState extends State<WorkoutRecordingItem> {
   int actuallyAchievedOutput = 0; // Stores the last slider value
+  int targetInput = 0;
 
   void updateValue(int value) {
     setState(() {
       actuallyAchievedOutput = value; // Store the last changed value
     });
   }
+
+  void updateTargetInput(int value) {
+    setState(() {
+      widget.exercise.target_output = value; // Store the last changed value
+    });
+  }
+
 
   // Provide a method to retrieve the saved value
   ExerciseResult getExerciseResult() {
@@ -169,6 +175,11 @@ class _WorkoutRecordingItemState extends State<WorkoutRecordingItem> {
           ),
           selectedWidget,
           SizedBox(height: 8.0),
+          Text(
+            'Target: ',
+            style: TextStyle(fontSize: 20),
+          ),
+          ExerciseTargetInputWidget(onValueChanged: (value) => updateTargetInput(value.toInt()))
         ],
       ),
     );

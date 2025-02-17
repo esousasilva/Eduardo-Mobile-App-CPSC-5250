@@ -1,9 +1,9 @@
 class Exercise {
   final String name;
-  final int target_output;
+  late int target_output;
   final ExerciseType unit;
 
-  const Exercise(this.name, this.target_output, this.unit);
+  Exercise(this.name, this.unit);
 }
 
 enum ExerciseType {

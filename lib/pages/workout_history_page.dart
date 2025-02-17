@@ -1,27 +1,19 @@
+import 'package:eduardo_personal_app/model/workout_viewmodel.dart';
 import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
 import 'package:eduardo_personal_app/pages/workout_recording_page.dart';
 import 'package:flutter/material.dart';
-import 'package:eduardo_personal_app/model/exercise_result.dart';
-import 'package:eduardo_personal_app/model/workout.dart';
 import 'package:eduardo_personal_app/pages/workout_details.dart';
-import 'package:eduardo_personal_app/model/workout_plan.dart';
 import 'package:provider/provider.dart';
 
-class WorkoutHistoryPage extends StatefulWidget {
+
+class WorkoutHistoryPage extends StatelessWidget {
   const WorkoutHistoryPage({super.key});
 
   @override
-  State<WorkoutHistoryPage> createState() => _WorkoutHistoryPageState();
-}
-
-
-class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
-
-  @override
   Widget build(BuildContext context) {
-    final workoutExercises = context.watch<WorkoutPlan>();
+    final workoutViewModel = context.watch<WorkoutViewModel>();
     return Scaffold(
-      appBar: AppBar(title: Text('Workout List (${workoutExercises.getWorkouts.length})')),
+      appBar: AppBar(title: Text('Workout List')),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -30,8 +22,22 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
             SizedBox(height: 10,),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: workoutExercises.getWorkouts.length,
-              itemBuilder: (context, index) => _WorkoutListItem(workoutExercises.getWorkouts[index], workoutExercises.getWorkouts[index].dateTimeWhenWasDone),
+              itemCount: workoutViewModel.workoutHistory.length,
+              itemBuilder: (context, index) {
+                final workout = workoutViewModel.workoutHistory[index];
+                return ListTile(
+                  title: Text(workout.name),
+                  subtitle: Text('Date: ${workout.dateTimeWhenWasDone}'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WorkoutDetails(exerciseResult: workout.exerciseResults),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
             SizedBox(height: 8),
             Padding(
@@ -41,7 +47,6 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
                   await Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => const WorkoutRecordingPage()),
                   );
-                  setState(() {}); // Refresh the list after returning
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 15),
@@ -69,34 +74,6 @@ class _WorkoutHistoryPageState extends State<WorkoutHistoryPage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _WorkoutListItem extends StatelessWidget {
-  final Workout workout;
-  final DateTime dateTime;
-
-  const _WorkoutListItem(this.workout, this.dateTime);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: ListTile(
-            title: Text(workout.name),
-            subtitle: Text('Date Completed: ${workout.dateTimeWhenWasDone.month}-'
-                '${workout.dateTimeWhenWasDone.day}-'
-                '${workout.dateTimeWhenWasDone.year}'),
-            trailing: Icon(Icons.arrow_forward),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => WorkoutDetails(
-                        exerciseResult: workout.exerciseResults)),
-              );
-            }
-        )
     );
   }
 }

@@ -6,10 +6,10 @@ import 'exercise.dart';
 class WorkoutPlan with ChangeNotifier{
   final String workoutName;
   late final List<Exercise> exercises = [
-    Exercise('Squats', 0, ExerciseType.repetitions),
-    Exercise('Jogging', 0, ExerciseType.miles),
-    Exercise('Bench Press', 0, ExerciseType.seconds),
-    Exercise('Swimming', 0, ExerciseType.laps),
+    Exercise('Squats', ExerciseType.repetitions),
+    Exercise('Jogging', ExerciseType.miles),
+    Exercise('Bench Press', ExerciseType.seconds),
+    Exercise('Swimming', ExerciseType.laps),
   ];
   final List<Workout> _sampleData = [];
   int get num => _sampleData.length;
