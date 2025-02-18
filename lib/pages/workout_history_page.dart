@@ -12,6 +12,7 @@ class WorkoutHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final workoutViewModel = context.watch<WorkoutViewModel>();
+    workoutViewModel.loadWorkouts();
     return Scaffold(
       appBar: AppBar(title: Text('Workout List')),
       body: SingleChildScrollView(
@@ -57,22 +58,6 @@ class WorkoutHistoryPage extends StatelessWidget {
             )
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'My Workout',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'User',
-          ),
-        ],
       ),
     );
   }
