@@ -1,4 +1,3 @@
-import 'package:eduardo_personal_app/model/exercise.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 
 class Workout {
@@ -9,5 +8,4 @@ class Workout {
   final DateTime dateTimeWhenWasDone;
 
   Workout(this.name, this.exerciseResults, this.dateTimeWhenWasDone);
-
 }
