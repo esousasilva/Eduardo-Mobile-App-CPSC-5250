@@ -9,4 +9,5 @@ class Workout {
   final DateTime dateTimeWhenWasDone;
 
   Workout(this.name, this.exerciseResults, this.dateTimeWhenWasDone);
+
 }
