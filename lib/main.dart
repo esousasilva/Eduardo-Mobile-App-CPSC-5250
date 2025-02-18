@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'model/workout_viewmodel.dart';
-import 'pages/workout_history_page.dart';
+import 'package:eduardo_personal_app/pages/home_screen.dart';
+import 'package:eduardo_personal_app/model/workout_viewmodel.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     MultiProvider(
       providers: [
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Workout Tracker',
-      home: WorkoutHistoryPage(),
+      home: HomeScreen(),
     );
   }
 }
