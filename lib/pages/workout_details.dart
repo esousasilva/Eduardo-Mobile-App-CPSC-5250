@@ -1,9 +1,6 @@
-import 'package:eduardo_personal_app/model/workout_viewmodel.dart';
 import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../model/exercise_result.dart';
-import '../model/workout_plan.dart';
 
 class WorkoutDetails extends StatefulWidget {
   final List<ExerciseResult> exerciseResult;
@@ -27,7 +24,7 @@ class _WorkoutDetailsState extends State<WorkoutDetails> {
     successfulExercises = widget.exerciseResult
         .where((result) =>
     result.exercise.target_output > 0 &&
-        (result.actuallyAchievedOutput / result.exercise.target_output) >= 1.0)
+        (result.achievedOutput / result.exercise.target_output) >= 1.0)
         .length;
   }
 
@@ -52,7 +49,7 @@ class _WorkoutDetailsState extends State<WorkoutDetails> {
                   final result = widget.exerciseResult[index];
                   final double valueAchieved = result.exercise.target_output == 0
                       ? 0
-                      : result.actuallyAchievedOutput / result.exercise.target_output;
+                      : result.achievedOutput / result.exercise.target_output;
                   if(valueAchieved < 1){
                     isComplete = false;
                   }
@@ -72,7 +69,7 @@ class _WorkoutDetailsState extends State<WorkoutDetails> {
                       children: [
                         Text(
                           'Target: ${result.exercise.target_output} ${result.exercise.unit.label} \n'
-                              'Actual output: ${result.actuallyAchievedOutput} ${result.exercise.unit.label}',
+                              'Actual output: ${result.achievedOutput} ${result.exercise.unit.label}',
                         ),
                         SizedBox(height: 5),
                         SizedBox(
