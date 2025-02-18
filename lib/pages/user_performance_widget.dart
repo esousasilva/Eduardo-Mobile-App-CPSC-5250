@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:eduardo_personal_app/model/workout_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:eduardo_personal_app/model/workout_plan.dart';
 
 class UserPerformanceWidget extends StatelessWidget {
   const UserPerformanceWidget({super.key});
