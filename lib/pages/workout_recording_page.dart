@@ -1,6 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:eduardo_personal_app/model/exercise.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 import 'package:eduardo_personal_app/pages/exercise_target_input_widget.dart';
@@ -10,7 +7,6 @@ import 'package:eduardo_personal_app/pages/repetitions_record_widget.dart';
 import 'package:eduardo_personal_app/pages/seconds_record_widget.dart';
 import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:eduardo_personal_app/model/workout_plan.dart';
 import 'package:provider/provider.dart';
 import '../model/workout_viewmodel.dart';
 
@@ -46,16 +42,16 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
       body: SingleChildScrollView(
         child: ListView(
           shrinkWrap: true,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 15),
             Center(
               child: Text('Exercise List', style: TextStyle(fontSize: 21)),
             ),
             SizedBox(height: 15),
+            UserPerformanceWidget(),
+            SizedBox(height: 15),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7, // Adjust height dynamically
+              height: MediaQuery.of(context).size.height * 0.65, // Adjust height dynamically
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
@@ -70,12 +66,18 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 List<ExerciseResult> exerciseResults = workoutItemStates
                     .map((state) => state.getExerciseResult())
                     .toList();
 
-                workoutViewModel.addWorkout('Custom Workout', exerciseResults);
+                final workoutViewModel = context.read<WorkoutViewModel>();
+                await workoutViewModel.addWorkout('Custom Workout', exerciseResults);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Workout saved!'))
+                );
+
                 Navigator.of(context).pop();
               },
               child: Text(
@@ -90,7 +92,6 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
     );
   }
 }
-
 
 class WorkoutRecordingItem extends StatefulWidget {
   final Exercise exercise;
@@ -126,7 +127,6 @@ class _WorkoutRecordingItemState extends State<WorkoutRecordingItem> {
       widget.exercise.target_output = value; // Store the last changed value
     });
   }
-
 
   // Provide a method to retrieve the saved value
   ExerciseResult getExerciseResult() {
