@@ -35,7 +35,8 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         exercises TEXT NOT NULL,
-        dateTimeWhenWasDone TEXT NOT NULL
+        dateTimeWhenWasDone TEXT NOT NULL,
+        isDownloaded INTEGER NOT NULL DEFAULT 0
       )
     ''');
   }
@@ -43,11 +44,7 @@ class DatabaseHelper {
   // Insert Workout
   Future<int> insertWorkout(Workout workout) async {
     final db = await database;
-    return await db.insert('workouts', {
-      'name': workout.name,
-      'exercises': json.encode(workout.exerciseResults.map((e) => e.toMap()).toList()), // Convert ExerciseResult to JSON
-      'dateTimeWhenWasDone': workout.dateTimeWhenWasDone.toIso8601String(),
-    });
+    return await db.insert('workouts', workout.toMap());
   }
 
 
@@ -57,13 +54,7 @@ class DatabaseHelper {
     final List<Map<String, dynamic>> maps = await db.query('workouts');
 
     return List.generate(maps.length, (i) {
-      return Workout(
-        maps[i]['name'],
-        List<ExerciseResult>.from(
-            json.decode(maps[i]['exercises']).map((e) => ExerciseResult.fromMap(e))
-        ), // Convert back to ExerciseResult list
-        DateTime.parse(maps[i]['dateTimeWhenWasDone']),
-      );
+      return Workout.fromMap(maps[i]);
     });
   }
 
@@ -74,10 +65,10 @@ class DatabaseHelper {
     return await db.delete('workouts', where: 'id = ?', whereArgs: [id]);
   }
 
-  // Future<void> deleteDatabaseFile() async {
-  //   final dbPath = await getDatabasesPath();
-  //   final path = join(dbPath, 'workout.db');
-  //   await deleteDatabase(path); // Deletes the existing database
-  //   print('Database deleted successfully.');
-  // }
+  Future<void> deleteDatabaseFile() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'workout.db');
+    await deleteDatabase(path); // Deletes the existing database
+    print('Database deleted successfully.');
+  }
 }
