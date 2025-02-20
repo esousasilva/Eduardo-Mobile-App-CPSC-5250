@@ -26,11 +26,11 @@ class WorkoutViewModel extends ChangeNotifier {
   }
 
   // Add workout and save to SQLite
-  Future<void> addWorkout(String name, List<ExerciseResult> results) async {
-    final workout = Workout(name, results, DateTime.now()); // Pass results directly
+  Future<void> addWorkout(String name, List<ExerciseResult> results, {bool isDownloaded = false}) async {
+    final workout = Workout(name, results, DateTime.now(), isDownloaded: isDownloaded);
 
     _workoutHistory.add(workout);
-    await _dbHelper.insertWorkout(workout);  // Save to SQLite
+    await _dbHelper.insertWorkout(workout);
     notifyListeners();
   }
 }
