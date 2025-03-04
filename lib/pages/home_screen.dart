@@ -1,45 +1,35 @@
-import 'package:eduardo_personal_app/model/exercise.dart';
-import 'package:eduardo_personal_app/model/exercise_result.dart';
-import 'package:eduardo_personal_app/pages/miles_record_widget.dart';
-import 'package:eduardo_personal_app/pages/workout_details.dart';
-import 'package:eduardo_personal_app/pages/workout_history_page.dart';
-import 'package:eduardo_personal_app/pages/workout_import_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key, required this.child});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  final Widget child; // The dynamic body content
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentPageIndex = 0;
-  final List<ExerciseResult> exerciseResult = [ExerciseResult(Exercise('Test',0, ExerciseType.repetitions), 15)];
-
-  final List<Widget> _pages = [
-    WorkoutHistoryPage(),
-    WorkoutImportPage(),
-    Placeholder(),
+  final List<String> _routes = [
+    '/history',
+    '/import',
+    '/user',
   ];
-
-  void _onItemTapped(int index){
-    setState(() {
-      _currentPageIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    String currentRoute = GoRouterState.of(context).uri.toString();
+
+    /// Ensure valid index
+    int currentIndex = _routes.contains(currentRoute) ? _routes.indexOf(currentRoute) : 0;
+
     return Scaffold(
-      body: _pages[_currentPageIndex],
+      body: child, // This dynamically updates
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentPageIndex,
-        onTap: _onItemTapped,
+        currentIndex: currentIndex,
+        onTap: (index) {
+          context.go(_routes[index]); // Navigate but keep HomeScreen
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Workout History',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.fitness_center),
