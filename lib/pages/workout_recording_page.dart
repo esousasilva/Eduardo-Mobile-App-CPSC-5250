@@ -32,6 +32,19 @@ class WorkoutRecordingPage extends StatefulWidget {
 
 class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
   List<_WorkoutRecordingItemState> workoutItemStates = [];
+  late TextEditingController _workoutNameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _workoutNameController = TextEditingController(text: '');
+  }
+
+  @override
+  void dispose() {
+    _workoutNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +63,13 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
             SizedBox(height: 15),
             UserPerformanceWidget(),
             SizedBox(height: 15),
+            TextField(
+              controller: _workoutNameController,
+              decoration: const InputDecoration(labelText: 'Enter the Workout Name'),
+            ),
+            SizedBox(height: 15),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.65, // Adjust height dynamically
+              height: MediaQuery.of(context).size.height *0.55, // Adjust height dynamically
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
@@ -72,7 +90,7 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
                     .toList();
 
                 final workoutViewModel = context.read<WorkoutViewModel>();
-                await workoutViewModel.addWorkout('Custom Workout', exerciseResults);
+                await workoutViewModel.addWorkout(_workoutNameController.text, exerciseResults);
 
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Workout saved!'))
