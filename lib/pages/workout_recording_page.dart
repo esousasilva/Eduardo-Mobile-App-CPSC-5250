@@ -7,6 +7,7 @@ import 'package:eduardo_personal_app/pages/repetitions_record_widget.dart';
 import 'package:eduardo_personal_app/pages/seconds_record_widget.dart';
 import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../model/workout_viewmodel.dart';
 
@@ -24,7 +25,9 @@ enum RepetitionUnitValues {
 }
 
 class WorkoutRecordingPage extends StatefulWidget {
-  const WorkoutRecordingPage({super.key});
+  final List<Exercise> listOfExercises;
+  final bool imported;
+  const WorkoutRecordingPage({required this.listOfExercises, required this.imported, super.key});
 
   @override
   State<WorkoutRecordingPage> createState() => _WorkoutRecordingPageState();
@@ -48,7 +51,7 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final workoutViewModel = context.watch<WorkoutViewModel>();
+    //final workoutViewModel = context.watch<WorkoutViewModel>();
 
     return Scaffold(
       appBar: AppBar(title: Text('Workout Recording')),
@@ -73,35 +76,47 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
-                itemCount: workoutViewModel.exercises.length,
+                itemCount: widget.listOfExercises.length,
                 itemBuilder: (context, index) {
                   return WorkoutRecordingItem(
-                    exercise: workoutViewModel.exercises[index],
+                    exercise: widget.listOfExercises[index],
+                    imported: widget.imported,
                     onStateCreated: (state) => workoutItemStates.add(state),
                   );
                 },
               ),
             ),
             SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                List<ExerciseResult> exerciseResults = workoutItemStates
-                    .map((state) => state.getExerciseResult())
-                    .toList();
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      context.go('/history');
+                    },
+                    child: Text('Cancel')
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    List<ExerciseResult> exerciseResults = workoutItemStates
+                        .map((state) => state.getExerciseResult())
+                        .toList();
 
-                final workoutViewModel = context.read<WorkoutViewModel>();
-                await workoutViewModel.addWorkout(_workoutNameController.text, exerciseResults);
+                    final workoutViewModel = context.read<WorkoutViewModel>();
+                    await workoutViewModel.addWorkout(_workoutNameController.text, exerciseResults);
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Workout saved!'))
-                );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Workout saved!'))
+                    );
 
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Save Workout',
-                style: TextStyle(fontSize: 19, color: Colors.green),
-              ),
+                    context.go('/history');
+                  },
+                  child: Text(
+                    'Save Workout',
+                    style: TextStyle(fontSize: 19, color: Colors.green),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
           ],
@@ -113,17 +128,19 @@ class _WorkoutRecordingPageState extends State<WorkoutRecordingPage> {
 
 class WorkoutRecordingItem extends StatefulWidget {
   final Exercise exercise;
+  final bool imported;
   final Function(_WorkoutRecordingItemState) onStateCreated;
 
   const WorkoutRecordingItem({
     required this.exercise,
     required this.onStateCreated,
+    required this.imported,
     super.key,
   });
 
   @override
   State<WorkoutRecordingItem> createState() {
-    exercise.target_output = 0;
+    //exercise.target_output = 0;
     final state = _WorkoutRecordingItemState();
     onStateCreated(state);
     return state;
@@ -182,24 +199,45 @@ class _WorkoutRecordingItemState extends State<WorkoutRecordingItem> {
         );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            widget.exercise.name,
-            style: TextStyle(fontSize: 20),
-          ),
-          selectedWidget,
-          SizedBox(height: 8.0),
-          Text(
-            'Target: ',
-            style: TextStyle(fontSize: 20),
-          ),
-          ExerciseTargetInputWidget(onValueChanged: (value) => updateTargetInput(value.toInt()))
-        ],
-      ),
-    );
+    if(widget.imported){
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.exercise.name,
+              style: TextStyle(fontSize: 20),
+            ),
+            selectedWidget,
+            SizedBox(height: 8.0),
+            Text(
+              'Target: ${widget.exercise.target_output}',
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.exercise.name,
+              style: TextStyle(fontSize: 20),
+            ),
+            selectedWidget,
+            SizedBox(height: 8.0),
+            Text(
+              'Target: ',
+              style: TextStyle(fontSize: 20),
+            ),
+            ExerciseTargetInputWidget(onValueChanged: (value) => updateTargetInput(value.toInt()))
+          ],
+        ),
+      );
+    }
   }
 }
