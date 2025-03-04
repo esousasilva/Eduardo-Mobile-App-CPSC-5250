@@ -41,7 +41,11 @@ final GoRouter appRouter = GoRouter(
       name: "/start_workout",
       path: "/start_workout",
       builder: (context, state) {
-        return WorkoutRecordingPage();
+        final extra = state.extra as Map<String, dynamic>;
+        return WorkoutRecordingPage(
+          listOfExercises: extra['listOfExercises'],
+          imported: extra['imported']
+        );
       }
     ),
   ]
