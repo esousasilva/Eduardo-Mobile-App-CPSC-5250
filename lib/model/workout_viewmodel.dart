@@ -7,15 +7,23 @@ import 'package:uuid/uuid.dart';
 
 class WorkoutViewModel extends ChangeNotifier {
   List<Workout> _workoutHistory = [];
-  List<Exercise> _exercises = [
+  final List<Exercise> _exercises = [
     Exercise('Squats', 0, ExerciseType.repetitions),
     Exercise('Jogging', 0, ExerciseType.miles),
     Exercise('Bench Press', 0, ExerciseType.seconds),
     Exercise('Swimming', 0, ExerciseType.laps),
   ];
 
+  List<Exercise> _importedExercises = [];
+
   List<Workout> get workoutHistory => _workoutHistory;
   List<Exercise> get exercises => _exercises;
+  List<Exercise> get importedExercises => _importedExercises;
+
+  set importedExercises(List<Exercise> importedList) {
+    _importedExercises.addAll(importedList);
+    notifyListeners();
+  }
 
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
@@ -32,7 +40,7 @@ class WorkoutViewModel extends ChangeNotifier {
     int id = uuid.hashCode;
     final workout = Workout(id, name, results, DateTime.now(), isDownloaded: isDownloaded);
 
-    _workoutHistory.add(workout);
+    //_workoutHistory.add(workout);
     await _dbHelper.insertWorkout(workout);
     notifyListeners();
   }
