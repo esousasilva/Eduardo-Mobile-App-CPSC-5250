@@ -1,8 +1,6 @@
 import 'package:eduardo_personal_app/model/workout_viewmodel.dart';
 import 'package:eduardo_personal_app/pages/user_performance_widget.dart';
-import 'package:eduardo_personal_app/pages/workout_recording_page.dart';
 import 'package:flutter/material.dart';
-import 'package:eduardo_personal_app/pages/workout_details.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +57,45 @@ class WorkoutHistoryPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  context.pushNamed('/start_workout');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Choose your source'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  context.go('/start_workout', extra: {
+                                    'listOfExercises': workoutViewModel.exercises,
+                                    'imported': false
+                                  });
+                                },
+                                child: Text('Hard-coded')
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  context.go('/start_workout', extra: {
+                                    'listOfExercises': workoutViewModel.importedExercises,
+                                    'imported': true
+                                  });
+                                },
+                                child: Text('Imported')
+                            )
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              child: Text('Cancel')
+                          )
+                        ],
+                      );
+                    }
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 15),
