@@ -3,6 +3,7 @@ import 'package:eduardo_personal_app/model/exercise.dart';
 import 'package:eduardo_personal_app/model/workout.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 import 'package:eduardo_personal_app/services/database_service.dart';
+import 'package:uuid/uuid.dart';
 
 class WorkoutViewModel extends ChangeNotifier {
   List<Workout> _workoutHistory = [];
@@ -27,10 +28,17 @@ class WorkoutViewModel extends ChangeNotifier {
 
   // Add workout and save to SQLite
   Future<void> addWorkout(String name, List<ExerciseResult> results, {bool isDownloaded = false}) async {
-    final workout = Workout(name, results, DateTime.now(), isDownloaded: isDownloaded);
+    var uuid = Uuid();
+    int id = uuid.hashCode;
+    final workout = Workout(id, name, results, DateTime.now(), isDownloaded: isDownloaded);
 
     _workoutHistory.add(workout);
     await _dbHelper.insertWorkout(workout);
+    notifyListeners();
+  }
+
+  Future<void> deleteWorkout(int id) async{
+    await _dbHelper.deleteWorkout(id);
     notifyListeners();
   }
 }

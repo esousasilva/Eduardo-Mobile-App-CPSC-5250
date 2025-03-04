@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 
 class Workout {
+  final int id;
   final String name;
   final List<ExerciseResult> exerciseResults;
   final DateTime dateTimeWhenWasDone;
   final bool isDownloaded;
 
-  Workout(this.name, this.exerciseResults, this.dateTimeWhenWasDone, {this.isDownloaded = false});
+  Workout(this.id, this.name, this.exerciseResults, this.dateTimeWhenWasDone, {this.isDownloaded = false});
 
   Map<String, dynamic> toMap() {
     return {
@@ -21,6 +22,7 @@ class Workout {
 
   factory Workout.fromMap(Map<String, dynamic> map) {
     return Workout(
+      map['id'],
       map['name'],
       List<ExerciseResult>.from(
         json.decode(map['exercises']).map((e) => ExerciseResult.fromMap(e)),
