@@ -3,10 +3,7 @@ import 'package:eduardo_personal_app/model/workout_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
 import '../model/exercise.dart';
-import '../model/workout.dart';
-import '../model/exercise_result.dart';
 
 class WorkoutImportPage extends StatefulWidget {
   const WorkoutImportPage({super.key});
@@ -50,22 +47,20 @@ class _WorkoutImportPageState extends State<WorkoutImportPage> {
     if (_parsedWorkout == null) return;
 
     final workoutViewModel = context.read<WorkoutViewModel>();
-    String workoutName = _parsedWorkout!['name'];
+    //String workoutName = _parsedWorkout!['name'];
 
-    List<ExerciseResult> exerciseResults = (_parsedWorkout!['exercises'] as List)
+    List<Exercise> exerciseResults = (_parsedWorkout!['exercises'] as List)
         .map((exercise) {
-      return ExerciseResult(
-        Exercise(
-          exercise['name'],
-          exercise['target'],
-          ExerciseType.values.firstWhere(
-                  (e) => e.name.toLowerCase() == exercise['unit'].toString().toLowerCase()),
-        ),
-        0,
+      return Exercise(
+        exercise['name'],
+        exercise['target'],
+        ExerciseType.values.firstWhere(
+                (e) => e.name.toLowerCase() == exercise['unit'].toString().toLowerCase()),
       );
     }).toList();
-
-    await workoutViewModel.addWorkout(workoutName, exerciseResults, isDownloaded: true);
+    //workoutViewModel.setImportedExercises
+    //await workoutViewModel.addWorkout(workoutName, exerciseResults, isDownloaded: true);
+    workoutViewModel.importedExercises = exerciseResults;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Workout saved successfully!')),
