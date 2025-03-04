@@ -37,6 +37,8 @@ dependencies:
   provider: ^6.1.2
   sqflite: any
   http: any
+  go_router: any
+  uuid: any
 
 dev_dependencies:
   sqflite_common_ffi: any
