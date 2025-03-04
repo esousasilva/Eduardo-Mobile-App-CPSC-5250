@@ -32,7 +32,7 @@ class DatabaseHelper {
   Future _createDB(Database db, int version) async {
     await db.execute('''
       CREATE TABLE workouts (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
         exercises TEXT NOT NULL,
         dateTimeWhenWasDone TEXT NOT NULL,
