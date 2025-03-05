@@ -39,6 +39,8 @@ dependencies:
   http: any
   go_router: any
   uuid: any
+  cloud_firestore: any
+  firebase_core: ^3.12.1
 
 dev_dependencies:
   sqflite_common_ffi: any
