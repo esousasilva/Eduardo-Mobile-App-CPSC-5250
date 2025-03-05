@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eduardo_personal_app/model/exercise_result.dart';
 
 class Workout {
@@ -13,10 +12,11 @@ class Workout {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
-      'exercises': json.encode(exerciseResults.map((e) => e.toMap()).toList()),
-      'dateTimeWhenWasDone': dateTimeWhenWasDone.toIso8601String(),
-      'isDownloaded': isDownloaded ? 1 : 0,  // Store as integer in database
+      'exerciseResults': exerciseResults.map((e) => e.toMap()).toList(),
+      'dateTimeWhenWasDone': Timestamp.fromDate(dateTimeWhenWasDone),
+      'isDownloaded': isDownloaded ? 1 : 0, // Convert bool to int
     };
   }
 
@@ -24,11 +24,11 @@ class Workout {
     return Workout(
       map['id'],
       map['name'],
-      List<ExerciseResult>.from(
-        json.decode(map['exercises']).map((e) => ExerciseResult.fromMap(e)),
-      ),
-      DateTime.parse(map['dateTimeWhenWasDone']),
-      isDownloaded: map['isDownloaded'] == 1,  // Convert from integer
+      (map['exerciseResults'] as List)
+          .map((e) => ExerciseResult.fromMap(e as Map<String, dynamic>))
+          .toList(),
+      (map['dateTimeWhenWasDone'] as Timestamp).toDate(),
+      isDownloaded: map['isDownloaded'] == 1, // Convert int to bool
     );
   }
 }
