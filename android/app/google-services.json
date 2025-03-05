@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289810144217",
+    "project_id": "cpsc-5250-db",
+    "storage_bucket": "cpsc-5250-db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289810144217:android:4ab40ce5e0afa523de17c8",
+        "android_client_info": {
+          "package_name": "com.example.eduardosousasilva.eduardo_personal_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTJpkDoN6pupmznVOicVdXZC1FbVqCCpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
